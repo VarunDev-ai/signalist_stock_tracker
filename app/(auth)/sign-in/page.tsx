@@ -3,7 +3,11 @@
 import FooterLink from "@/components/custom/forms/FooterLink";
 import InputField from "@/components/custom/forms/InputField";
 import { Button } from "@/components/ui/button";
+import { signInWithEmail } from "@/lib/actions/auth.actions";
+import { signInEmail } from "better-auth/api";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const SignIn = () => {
   const {
@@ -17,9 +21,15 @@ const SignIn = () => {
     mode: "onBlur",
   });
 
+  const router = useRouter();
+
   async function onSubmit(data: SignInFormData) {
     try {
-      console.log(data);
+      const result = await signInWithEmail(data);
+      if (result.success) {
+        toast.success(`Welcome back ${result.data?.user.name || ""}`);
+         router.replace('/')
+      }
     } catch (error) {
       console.error(error);
     }

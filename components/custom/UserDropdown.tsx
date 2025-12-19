@@ -13,15 +13,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { USER_IMAGE_URL } from "@/lib/constants";
 import { LogOutIcon } from "lucide-react";
 import NavItems from "./NavItems";
+import { signOut } from "@/lib/actions/auth.actions";
 
-const UserDropdown = () => {
+const UserDropdown = ({ user }: { user: User }) => {
   const router = useRouter();
 
   const handleSignOut = async () => {
-    router.push("/sign-in");
+    await signOut()
+    router.replace("/sign-in");
   };
-
-  const user = { name: "Varun", email: "varun@email.com" };
 
   return (
     <DropdownMenu>
@@ -67,7 +67,7 @@ const UserDropdown = () => {
           onClick={handleSignOut}
           className="text-gray-100 text-md font-medium focus:bg-transparent focus:text-yellow-500 transition-colors cursor-pointer"
         >
-          <LogOutIcon className="h-4 w-4 hidden sm:block" />  Sign Out
+          <LogOutIcon className="h-4 w-4 hidden sm:block" /> Sign Out
         </DropdownMenuItem>
         <nav className="sm:hidden">
           <NavItems />

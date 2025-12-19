@@ -1,8 +1,15 @@
+import { auth } from "@/lib/better-auth/auth";
 import { IMAGE } from "@/lib/constants";
+import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = async ({ children }: { children: React.ReactNode }) => {
+  const session = await auth.api.getSession({ headers: await headers() });
+
+  if (session?.user) redirect("/");
+
   return (
     <main className="auth-layout">
       <section className="auth-left-section scrollbar-hide-default">
@@ -27,7 +34,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <div className="flex items-center justify-between">
             <div>
               <cite className="auth-testimonial-author">-Varun S.</cite>
-              <p className="max-md:test-xs text-gray-500">Retard Investor</p>
+              <p className="max-md:test-xs text-gray-500">Investor</p>
             </div>
             <div className="flex items-center gap-0.5 ">
               {[...Array(5)].map((_, i) => (
